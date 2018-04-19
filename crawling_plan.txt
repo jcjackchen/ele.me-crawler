@@ -1,0 +1,13 @@
+Starter:
+	Crawl for All restaurant name in Beijing.
+	Identify useful information and recollect
+Evolve:
+	Collect all restaurants info.
+
+
+
+Discovery:
+	JS function: Geohash.encode(lat,lon)
+	
+
+	 
