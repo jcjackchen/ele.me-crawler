@@ -7,9 +7,10 @@ import json
 import time
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-chromedriver = "/Users/jcjack/Desktop/Computer Network-PKU/project/chromedriver"
+chromedriver = ""
 cookie_file = "cookie.txt"
-mobile_phone = "13360161111"
+mobile_phone = ""
+password = ""
 poi_file = "poi.json"
 
 def getJsonFromUrl(url):
@@ -52,8 +53,8 @@ def login():
     inputs = browser.find_elements_by_tag_name("input")
     button = browser.find_element_by_class_name("SubmitButton-2wG4T")
 
-    inputs[0].send_keys("13360161111")
-    inputs[1].send_keys("jyc123456")
+    inputs[0].send_keys(mobile_phone)
+    inputs[1].send_keys(password)
     button.click()
 
     cookie = browser.get_cookies()
