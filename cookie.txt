@@ -1,7 +1,0 @@
-# Netscape HTTP Cookie File
-# http://curl.haxx.se/rfc/cookie_spec.html
-# This is a generated file!  Do not edit.
-
-.ele.me	TRUE	/	FALSE	1555651463	SID	wzcqRVszs8QrruJw1bm05UcjdhOaUmJcxTWg
-.ele.me	TRUE	/	FALSE	1555651463	USERID	234515053
-.ele.me	TRUE	/	FALSE	1835155463	track_id	1524115463|0cb4f6d2b69437ed322f2d068a2c64108b529d5a862aba41dc|76264fd2ed94c30e7d1afdfb0f846ad1
