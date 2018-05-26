@@ -223,7 +223,7 @@ def crawl_menu():
     datafile = open("data/"+timeset+" Menu.txt",'w')
     log = open("data/"+timeset+" Log",'w')
 
-    ids = collect_ids(resume=True)
+    ids = collect_ids(resume=False)
     count = 0
     
     # cookie = cookielib.MozillaCookieJar()
