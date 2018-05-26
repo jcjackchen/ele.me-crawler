@@ -1,6 +1,7 @@
 import folium
 import random
 file_name = "data/2018-04-19 18:30:40 Data.txt"
+resume_file = ""
 
 
 def collect_location(file=file_name):
@@ -27,21 +28,37 @@ def mapping():
 
     mapit.save('map.html')
 
-def collect_ids(file=file_name):
+def collect_ids(file=file_name,resume=False):
     f = open(file,"r")
     L = {}
     failed = 0
     for line in f:
         str_buffer = line.split(",")
         try:
-            L[str_buffer[0]] = str_buffer[2]
+            L[int(str_buffer[0])] = str_buffer[2]
         except Exception as e:
             failed += 1
             continue
-        
-    print(failed)
+
+    done = []
+    if resume:
+        f = open(resume_file,"r")
+        for line in f:
+            if "id=" in line:
+                i = line.index("=") + 1
+                done.append(int(line[i:]))
+                
+    count = 0
+    for d in done:
+        if d in L:
+            L.pop(d)
+            count += 1
+
+    assert(count == len(done))
+    print("Data failed to convert: " + str(failed))
+    print("Current restaurant to operate: " + str(len(L)))
     return L
-        
 
 if __name__ == "__main__":
+    # collect_ids(resume=True)
     mapping()

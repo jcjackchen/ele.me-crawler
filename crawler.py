@@ -223,7 +223,7 @@ def crawl_menu():
     datafile = open("data/"+timeset+" Menu.txt",'w')
     log = open("data/"+timeset+" Log",'w')
 
-    ids = collect_ids()
+    ids = collect_ids(resume=True)
     count = 0
     
     # cookie = cookielib.MozillaCookieJar()
@@ -235,7 +235,7 @@ def crawl_menu():
     for i in ids:
         # time.sleep(1)
         food_ids = set()
-        url = "https://www.ele.me/restapi/shopping/v2/menu?restaurant_id="+i;
+        url = "https://www.ele.me/restapi/shopping/v2/menu?restaurant_id="+str(i);
         try :
             data = getJsonFromUrl(url)
             count += 1
