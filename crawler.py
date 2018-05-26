@@ -5,6 +5,7 @@ import urllib2
 import cookielib
 import json
 import time
+from utility import collect_ids
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 chromedriver = ""
@@ -211,6 +212,70 @@ def crawl():
                 datafile.flush()
             #print each['address'],each['name'],each['latitude'], each['longitude'], str(each['recent_order_num']), each['regular_customer_count'], \
             #each['phone'], each['rating'], each['rating_count'], each['recommend'], each['status'],each['is_new']
+        except Exception as A:
+            print (A)
+
+def crawl_menu():
+
+    start_time = time.time()
+    timeset = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+
+    datafile = open("data/"+timeset+" Menu.txt",'w')
+    log = open("data/"+timeset+" Log",'w')
+
+    ids = collect_ids()
+    count = 0
+    
+    # cookie = cookielib.MozillaCookieJar()
+    # try:
+    #     cookie.load(cookie_file, ignore_discard=True, ignore_expires=True)
+    # except Exception as e:
+    #     cookie = login_by_code()
+    
+    for i in ids:
+        # time.sleep(1)
+        food_ids = set()
+        url = "https://www.ele.me/restapi/shopping/v2/menu?restaurant_id="+i;
+        try :
+            data = getJsonFromUrl(url)
+            count += 1
+            if count % 10 == 0:
+                print("\n" + str(count) + " restaurants have explored")
+                log.write(str(count) + " restaurants have explored\n")
+                log.flush()
+
+            print(url)
+            print(ids[i])
+            log.write(ids[i]+'\n')
+            log.write(url+'\n')
+            log.flush()
+        except Exception as e:
+            print("Failed to load data")
+            print(count)
+            print(e)
+            time.sleep(3)
+            continue
+
+        try :
+            datafile.write(ids[i]+"\n\n")
+            datafile.flush()
+            for each in data :
+                category =""+str(each['id'])+",'"+each['name']+"','"+each['description']+"',"+ str(each['type'])+ "\n"
+                datafile.write(category.encode(encoding='UTF-8'));
+                datafile.flush()
+                for food in each['foods']:
+                    if food['item_id'] in food_ids:
+                        continue
+                    food_ids.add(food['item_id'])
+                    food_str = str(food['item_id'])+",'"+food['name']+"','"+food['description']+"'," \
+                    +str(food['rating'])+","+str(food['rating_count'])+","+str(food['satisfy_count'])+","+str(food['satisfy_rate']) \
+                    +",'"+food['tips']+"'\n"
+                    datafile.write(food_str.encode(encoding='UTF-8'));
+                    datafile.flush()
+
+                datafile.write('\n')
+                datafile.flush()
+
         except Exception as A:
             print (A)
 
