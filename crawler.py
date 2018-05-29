@@ -216,20 +216,20 @@ def crawl():
         except Exception as A:
             print (A)
 
-def crawl_menu():
+def crawl_menu(city="Beijing"):
 
     start_time = time.time()
     timeset = time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
 
-    ids = collect_ids()
+    ids = collect_ids(city=city)
     count = 0
 
-    datafile = open("data/"+timeset+" Menu.csv",'wb')
+    datafile = open(city+"/"+timeset+" Menu.csv",'wb')
     datafile.write(u'\ufeff'.encode('utf8'))
     csvwriter = csv.writer(datafile,delimiter=',')
-    csvwriter.writerow(['restaurant id','item id','category','name','month sales','rating','rating count','satisfy count','satisfy rate'\
-        ,'original_price','price','promotion stock','recent rating','stock'])
-    log = open("data/"+timeset+" Log",'w')
+    csvwriter.writerow(['restaurant id','category id','item id','category','name','rating','rating count','satisfy count','satisfy rate'\
+        ,'original_price','price','promotion stock','recent popularity','recent rating','stock'])
+    log = open(city+"/"+timeset+" Log",'w')
     
     # cookie = cookielib.MozillaCookieJar()
     # try:
@@ -258,6 +258,12 @@ def crawl_menu():
             print("Failed to load data")
             print(count)
             print(e)
+            log.write("****************************************\n")
+            log.write(ids[i]+'\n')
+            log.write(str(i)+'\n')
+            log.write(str(e)+'\n')
+            log.write("****************************************\n")
+            log.flush()
             time.sleep(300)
             continue
 
@@ -273,9 +279,9 @@ def crawl_menu():
 
                     spec = food['specfoods'][0]
 
-                    csvwriter.writerow([food['restaurant_id'],food['item_id'],name.encode("utf-8"),food['name'].encode("utf-8"),food['month_sales'],\
+                    csvwriter.writerow([food['restaurant_id'],food['category_id'],food['item_id'],name.encode("utf-8"),food['name'].encode("utf-8"),\
                         food['rating'],food['rating_count'],food['satisfy_count'],food['satisfy_rate'],spec['original_price'],spec['price'],\
-                        spec['promotion_stock'],spec['recent_rating'],spec['stock']]);
+                        spec['promotion_stock'],spec['recent_popularity'],spec['recent_rating'],spec['stock']]);
 
 
             csvwriter.writerow([])
@@ -283,5 +289,7 @@ def crawl_menu():
         except Exception as A:
             print (A)
 
+
 if __name__ == "__main__":
-    crawl()
+    # crawl()
+    crawl_menu("Beijing")

@@ -1,10 +1,15 @@
 import folium
 import random
-file_name = "data/2018-04-19 18:30:40 Data.txt"
-resume_file = ""
+import csv
+
+# file_name = "data/2018-04-19 18:30:40 Data.txt"
+file_name1 = "Beijing/split1.txt"
+file_name2 = "Shanghai/Shanghai_1.csv"
+resume_file = "Beijing/2018-05-29 09:57:31 Log"
+split_file = "Beijing/split"
 
 
-def collect_location(file=file_name):
+def collect_location(file=file_name1):
     f = open(file,"r")
     L = []
     failed = 0
@@ -28,14 +33,31 @@ def mapping():
 
     mapit.save('map.html')
 
-def collect_ids(file=file_name,resume=False):
+def collect_ids(file=file_name1,resume=False,city="Beijing"):
+
+    position = 1
+
+    if city == "Beijing":
+        file = file_name1
+        position = 1
+    if city == "Shanghai":
+        file = file_name2
+        position = 2
+
+
+    print("City: "+city)
+
     f = open(file,"r")
     L = {}
     failed = 0
     for line in f:
         str_buffer = line.split(",")
         try:
-            L[int(str_buffer[0])] = str_buffer[2]
+            name = str_buffer[position].rstrip()
+            if city == "Shanghai":
+                name = str_buffer[position].rstrip().decode(encoding="gbk").encode(encoding="utf-8")
+
+            L[int(str_buffer[0])] = name
         except Exception as e:
             failed += 1
             continue
@@ -59,6 +81,29 @@ def collect_ids(file=file_name,resume=False):
     print("Current restaurant to operate: " + str(len(L)))
     return L
 
+
+def data_divide(save_file=split_file,number=4):
+    L = collect_ids();
+    count = 0.25 * len(L)
+    split = 0
+    f = open(save_file+str(split)+ ".txt","w")
+    number_count = 0
+
+    for l in L:
+        if count <= 0:
+            split += 1
+            count = 0.25 * len(L)
+            f = open(save_file+str(split)+ ".txt","w")
+
+        string = str(l) + "," + L[l] + "\n" 
+        f.write(string)
+        f.flush
+        count -= 1
+        number_count += 1
+
+    assert(number_count == len(L))
+
 if __name__ == "__main__":
-    # collect_ids(resume=True)
-    mapping()
+    collect_ids(city="Shanghai")
+    # mapping()
+    # data_divide()
