@@ -1,0 +1,27 @@
+Starter:
+	Crawl for All restaurant name in Beijing.
+	Identify useful information and recollect
+Evolve:
+	Collect all restaurants info.
+
+
+
+Discovery:
+	JS function: Geohash.encode(lat,lon)
+
+
+
+Json File Read:
+	Menu API: https://www.ele.me/restapi/shopping/v2/menu?restaurant_id=2165785
+
+	[id, name, description, type, [foods]]
+
+		food:
+
+			[item_id, name, description, category_id, rating, rating_count, satisfy_count, satisfy_rate, tips, [specfoods]]
+
+				specfood:
+					[price,recent_popularity, recent_rating, stock, promotion_stock, sold_out, weight]
+	
+
+	 
